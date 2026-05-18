@@ -3,20 +3,20 @@ import React from "react";
 
 const Banner = () => {
   return (
-    <section className="bg-gradient-to-r from-indigo-50 via-white to-cyan-50 py-16 px-6 lg:px-20">
+    <section className="bg-[#1E3029] py-16 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div>
-          <p className="text-indigo-600 font-semibold text-lg mb-3">
+          <p className="text-black font-semibold text-sm mb-3">
             Quiet rooms, on demand
           </p>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-1900 leading-tight mb-6">
             Find Your Perfect <br />
-            Study Room
+           <span className="text-[#E69233]"> Study Room</span>
           </h1>
 
-          <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-xl">
+          <p className="text-gray text-lg leading-relaxed mb-8 max-w-lg">
             Browse and book quiet, private study rooms in your library by the
             hour. List your own room and earn — without the scheduling
             headaches.
@@ -24,7 +24,7 @@ const Banner = () => {
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-4 mb-10">
-            <button className="bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 text-white px-6 py-3 rounded-xl font-semibold shadow-md">
+            <button className="bg-[#E69233] hover:bg-[#6f3e06] transition-all duration-300 text-white px-6 py-3 rounded-xl font-semibold shadow-md">
               Explore Rooms
             </button>
 
@@ -34,20 +34,20 @@ const Banner = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6">
-            <div className="bg-white shadow-md rounded-2xl p-5 text-center">
-              <h2 className="text-3xl font-bold text-indigo-600">120+</h2>
-              <p className="text-gray-500 mt-1">Rooms Listed</p>
+          <div className="grid grid-cols-3 gap-3 max-w-7xl">
+            <div className="  rounded-2xl p-1 text-center">
+              <h2 className="text-3xl font-bold ">120+</h2>
+              <p className="">Rooms Listed</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-2xl p-5 text-center">
-              <h2 className="text-3xl font-bold text-indigo-600">5K+</h2>
-              <p className="text-gray-500 mt-1">Happy Students</p>
+            <div className=" rounded-2xl p-1 text-center">
+              <h2 className="text-3xl font-bold ">5K+</h2>
+              <p className=" mt-1">Happy Students</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-2xl p-5 text-center">
-              <h2 className="text-3xl font-bold text-indigo-600">24/7</h2>
-              <p className="text-gray-500 mt-1">Available Support</p>
+            <div className=" rounded-2xl p-1 text-center">
+              <h2 className="text-3xl font-bold ">24/7</h2>
+              <p className="mt-1">Available Support</p>
             </div>
           </div>
         </div>

@@ -60,7 +60,7 @@ const Navbar = () => {
               <Link href="/Rooms">Rooms</Link>
             </li>
             <li>
-              <Link href="/profile">Add Room</Link>
+              <Link href="/addRoom">Add Room</Link>
             </li>
             <li>
               <Link href="/listings">My Listings</Link>
