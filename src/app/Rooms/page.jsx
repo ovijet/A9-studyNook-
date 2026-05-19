@@ -6,12 +6,12 @@ const AllRooms = async () => {
   const data = await res.json();
   console.log(data, "fffffffff");
   return (
-    <div>
+    <div className="bg-[#111815]">
       <h1>All study Rooms</h1>
       <p>
         Browse the full catalog. Filter by amenity, price, or search by name.
       </p>
-      <div>
+      <div className="grid grid-cols-3 items-center gap-3 max-w-7xl mx-auto">
         {data.map((books) => (
           <RoomCard key={books._id} books={books}></RoomCard>
         ))}

@@ -10,7 +10,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#18211E] text-white mt-3">
+    <footer className="bg-[#18211E] text-white">
       <div className="max-w-7xl mx-auto px-6 py-10 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         {/* Logo + About */}
         <aside className="space-y-4">
@@ -21,7 +21,8 @@ const Footer = () => {
           </div>
 
           <p className="text-sm text-gray-400 leading-6">
-            Quiet study rooms, booked by the hour. Built for students, scholars, and lifelong learners.
+            Quiet study rooms, booked by the hour. Built for students, scholars,
+            and lifelong learners.
           </p>
         </aside>
 
