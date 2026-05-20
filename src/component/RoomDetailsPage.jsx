@@ -4,6 +4,7 @@ import { Button, Card } from "@heroui/react";
 import Image from "next/image";
 import React from "react";
 import { toast } from "react-toastify";
+import BookNewModal from "./BookNewModal";
 
 const RoomDetailsPage = ({ book }) => {
   const { data: session } = authClient.useSession();
@@ -37,14 +38,14 @@ const RoomDetailsPage = ({ book }) => {
 
     console.log(bookingData);
 
-    const res =await fetch("http://localhost:5000/booking", {
+    const res = await fetch("http://localhost:5000/booking", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(bookingData),
     });
-    const data =await res.json()
+    const data = await res.json();
     console.log(data);
     toast("Booking success");
   };
@@ -122,12 +123,7 @@ const RoomDetailsPage = ({ book }) => {
               </div>
 
               {/* Button */}
-              <Button
-                onClick={handleBook}
-                className="w-full mt-6 bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-all duration-300"
-              >
-                Book Now
-              </Button>
+              <BookNewModal />
             </Card>
           </div>
         </div>
