@@ -12,8 +12,9 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { authClient } from "@/lib/auth-client";
+
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -23,33 +24,37 @@ const RegisterPage = () => {
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
     const { name, email, password, image } = userData;
-    const { data, error } = await authClient.signUp.email({
+    console.log(userData);
+
+
+    const {data,error}=await authClient.signUp.email({
+      name,
       email,
       password,
-      name,
-      image,
-    });
+      image
+    })
+    
     if (data) {
       alert("register successful");
       router.push("/");
     }
     if (error) {
-      alert("error");
+      alert("already signup with email");
       return;
     }
   };
 
-  const GoogleSignUp = async () => {
-    const { data, error } = await authClient.signIn.social({
-      provider: "google",
-    });
+  // const GoogleSignUp = async () => {
+  //   const { data, error } = await authClient.signIn.social({
+  //     provider: "google",
+  //   });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-    // return data;
-  };
+  //   if (error) {
+  //     alert(error.message);
+  //     return;
+  //   }
+  //   return data;
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -137,7 +142,7 @@ const RegisterPage = () => {
 
         {/* Google Button */}
         <Button
-          onClick={GoogleSignUp}
+          // onClick={GoogleSignUp}
           variant="bordered"
           className="w-full flex items-center justify-center gap-2"
         >

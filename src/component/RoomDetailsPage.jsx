@@ -1,17 +1,11 @@
-"use client";
-import { authClient } from "@/lib/auth-client";
-import { Button, Card } from "@heroui/react";
-import Image from "next/image";
-import React from "react";
-import { toast } from "react-toastify";
-import BookNewModal from "./BookNewModal";
+
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const RoomDetailsPage = ({ book }) => {
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
-
-  console.log(user, "xxxxxxxxxxxxxxx");
-
   const {
     image,
     roomName,
@@ -19,114 +13,227 @@ const RoomDetailsPage = ({ book }) => {
     floor,
     capacity,
     hourlyRate,
-    amenities,
-    _id,
-  } = book;
+    amenities = [],
+    bookingCount,
+  } = book || {};
 
-  console.log(book, "ssssss");
+  const imageSrc =
+    image && image.startsWith('http')
+      ? image
+      : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb';
 
-  const handleBook = async () => {
-    const bookingData = {
-      userId: user?.id,
-      userImage: user?.image,
-      userName: user?.name,
-      bookId: _id,
-      roomName,
-      description,
-      image,
+  const getAmenityIcon = (amenity) => {
+    const iconMap = {
+      Whiteboard: '📝',
+      Projector: '📽️',
+      'Wi-Fi': '📶',
+      WiFi: '📶',
+      wifi: '📶',
+      AC: '❄️',
+      'Air Conditioning': '❄️',
+      quiet: '🤫',
+      'Quiet Zone': '🤫',
     };
 
-    console.log(bookingData);
-
-    const res = await fetch("http://localhost:5000/booking", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    });
-    const data = await res.json();
-    console.log(data);
-    toast("Booking success");
+    return iconMap[amenity] || '✓';
   };
 
   return (
-    <div>
-      <div className="pb-10">
-        {/* Banner Image */}
-        <div className="max-w-7xl mx-auto px-4">
-          <Image
-            src={image}
-            width={1200}
-            height={500}
-            alt={roomName}
-            className="w-full h-[400px] mt-5 rounded-2xl object-cover"
-          />
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 mt-8 flex flex-col lg:flex-row gap-8">
-          {/* Left Side */}
-          <div className="flex-1 space-y-6">
-            {/* Title */}
-            <div>
-              <h1 className="text-4xl font-bold text-gray-800">{roomName}</h1>
+      {/* Hero Section */}
+      <div className="relative w-full h-[350px] md:h-[550px] overflow-hidden">
+
+        <Image
+          src={imageSrc}
+          alt={roomName || 'Room'}
+          fill
+          priority
+          className="object-cover"
+        />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/45" />
+
+        {/* Content */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-6xl px-5">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-block bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium mb-4">
+              Premium Study Room
             </div>
 
-            {/* Description */}
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Description</h2>
+            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+              {roomName}
+            </h1>
 
-              <p className="text-gray-600 leading-relaxed">{description}</p>
+            <p className="text-gray-200 mt-4 text-lg max-w-2xl">
+              Productive, peaceful and modern environment for focused learning.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 mt-10">
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="bg-white rounded-3xl shadow-lg p-6 text-center border border-gray-100"
+          >
+            <div className="text-4xl mb-3">💰</div>
+
+            <p className="text-gray-500 text-sm">
+              Hourly Rate
+            </p>
+
+            <h2 className="text-2xl font-bold text-purple-600 mt-1">
+              ${hourlyRate}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="bg-white rounded-3xl shadow-lg p-6 text-center border border-gray-100"
+          >
+            <div className="text-4xl mb-3">🪑</div>
+
+            <p className="text-gray-500 text-sm">
+              Capacity
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {capacity} Seats
+            </h2>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="bg-white rounded-3xl shadow-lg p-6 text-center border border-gray-100"
+          >
+            <div className="text-4xl mb-3">📍</div>
+
+            <p className="text-gray-500 text-sm">
+              Floor
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {floor}
+            </h2>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -5 }}
+            className="bg-white rounded-3xl shadow-lg p-6 text-center border border-gray-100"
+          >
+            <div className="text-4xl mb-3">📅</div>
+
+            <p className="text-gray-500 text-sm">
+              Bookings
+            </p>
+
+            <h2 className="text-2xl font-bold text-gray-800 mt-1">
+              {bookingCount || 0}
+            </h2>
+          </motion.div>
+
+        </div>
+
+        {/* Description + Booking */}
+        <div className="grid lg:grid-cols-3 gap-8 mt-12">
+
+          {/* Description */}
+          <div className="lg:col-span-2">
+
+            <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                About This Room
+              </h2>
+
+              <p className="text-gray-600 leading-relaxed text-lg">
+                {description}
+              </p>
+
             </div>
 
             {/* Amenities */}
-            <div>
-              <h2 className="text-xl font-semibold mb-3">Amenities</h2>
+            <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100 mt-8">
 
-              <div className="flex flex-wrap gap-3">
-                {amenities?.map((item, index) => (
-                  <span
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                Amenities
+              </h2>
+
+              <div className="flex flex-wrap gap-4">
+
+                {amenities.map((item, index) => (
+                  <motion.span
                     key={index}
-                    className="bg-gray-100 border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm"
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-purple-100 text-purple-700 px-5 py-3 rounded-2xl font-medium"
                   >
-                    {item}
-                  </span>
+                    {getAmenityIcon(item)} {item}
+                  </motion.span>
                 ))}
+
               </div>
+
             </div>
+
           </div>
 
-          {/* Right Side Card */}
-          <div className="w-full lg:w-[350px]">
-            <Card className="p-6 shadow-xl rounded-2xl sticky top-5">
-              <div className="space-y-4">
-                <div className="flex justify-between  pb-2">
-                  <span className="font-bold text-yellow-400 text-3xl">
-                    {hourlyRate}
-                  </span>
+          {/* Booking Card */}
+          <div>
+
+            <div className="sticky top-24 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-3xl shadow-2xl p-8 text-white">
+
+              <p className="text-purple-200 text-sm">
+                Reserve your spot today
+              </p>
+
+              <h2 className="text-5xl font-bold mt-3">
+                ${hourlyRate}
+              </h2>
+
+              <p className="text-purple-200 mt-1">
+                per hour
+              </p>
+
+              <div className="mt-8 space-y-4">
+
+                <div className="flex items-center justify-between border-b border-white/20 pb-3">
+                  <span>🪑 Capacity</span>
+                  <span>{capacity} Seats</span>
                 </div>
 
-                <div className="flex justify-between  pb-2">
-                  <span className="font-bold text-black flex justify-center items-center gap-2">
-                    {" "}
-                    {/* <RiFloodLinee /> */}
-                    {floor}
-                  </span>
+                <div className="flex items-center justify-between border-b border-white/20 pb-3">
+                  <span>📍 Floor</span>
+                  <span>{floor}</span>
                 </div>
 
-                <div className="flex justify-between pb-2">
-                  <span className="font-bold text-black flex justify-center items-center gap-2">
-                    {capacity}
-                  </span>
+                <div className="flex items-center justify-between border-b border-white/20 pb-3">
+                  <span>📅 Bookings</span>
+                  <span>{bookingCount || 0}</span>
                 </div>
+
               </div>
 
-              {/* Button */}
-              <BookNewModal />
-            </Card>
+              <button className="w-full mt-8 bg-white text-purple-700 hover:bg-gray-100 font-bold py-4 rounded-2xl transition-all duration-300 text-lg shadow-lg">
+                Book Now
+              </button>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </div>
   );

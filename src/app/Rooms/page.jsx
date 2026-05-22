@@ -12,8 +12,8 @@ const AllRooms = async () => {
         Browse the full catalog. Filter by amenity, price, or search by name.
       </p>
       <div className="grid grid-cols-3 items-center gap-3 max-w-7xl mx-auto">
-        {data.map((books) => (
-          <RoomCard key={books._id} books={books}></RoomCard>
+        {data.map((room) => (
+          <RoomCard key={room._id} room={room}></RoomCard>
         ))}
       </div>
     </div>
