@@ -1,4 +1,5 @@
 "use client";
+import { authClient } from "@/lib/auth-client";
 import { Input, TextArea, TextField, Button, Card } from "@heroui/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -34,10 +35,16 @@ const AddRoomPage = () => {
         room.hourlyRate = Number(room.hourlyRate);
         room.floor = room.floor ? Number(room.floor) : null;
 
+
+        const {data:tokenData}=await authClient.token()
+        console.log(tokenData);
+
+
         const res = await fetch(`http://localhost:5000/study`, {
             method: "POST",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                authorization:`Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(room)
         });

@@ -72,7 +72,7 @@ const RoomDetailsPage = ({ book }) => {
             </h1>
 
             <p className="text-gray-200 mt-4 text-lg max-w-2xl">
-              Productive, peaceful and modern environment for focused learning.
+              {description}
             </p>
           </motion.div>
         </div>

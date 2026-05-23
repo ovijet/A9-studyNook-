@@ -4,197 +4,140 @@ import React, { useState } from 'react';
 import { Calendar, Clock, X } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 
-const BookNewModal = ({book}) => {
+const TIME_SLOTS = [
+  '08:00 - 09:00',
+  '09:00 - 10:00',
+  '10:00 - 11:00',
+  '11:00 - 12:00',
+  '12:00 - 13:00',
+  '13:00 - 14:00',
+  '14:00 - 15:00',
+  '15:00 - 16:00',
+];
 
-  // const { roomName,description}=book
-
-  console.log("ROOM DETAILS BOOK:", book);
-
-
-  const {
-    image,
-    roomName,
-    description,
-    floor,
-    capacity,
-    // hourlyRate,
-    amenities = [],
-    bookingCount,
-  } = book || {};
-
-  const { data } = authClient.useSession();
-    const user = data?.user;
-
-    console.log(user,'user');
-  
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedSlots, setSelectedSlots] = useState([]);
-
-  const TIME_SLOTS = [
-    '08:00 - 09:00',
-    '09:00 - 10:00',
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '12:00 - 13:00',
-    '13:00 - 14:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-  ];
-
-  const hourlyRate = 10;
-  const totalCost = selectedSlots.length * hourlyRate;
-
-  const toggleSlot = (slot) => {
-    setSelectedSlots((prev) =>
-      prev.includes(slot)
-        ? prev.filter((s) => s !== slot)
-        : [...prev, slot]
-    );
-  };
-
-  // ✅ FIXED SUBMIT
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const form = new FormData(e.target);
-
-  //   const bookingData = {
-  //     date: form.get("date"),
-  //     slots: selectedSlots,
-  //     totalCost,
-  //   };
-
-  //   console.log("BOOKING:", bookingData);
-  // };
-
-
-  const onSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!user) {
-    alert("Please login first");
-    return;
-  }
-
-  const form = new FormData(e.target);
-
-  const bookingData = {
-    userId: user.id,
-    name: user.name,
-    email: user.email,
-    roomName,
-    description,
-    date: form.get("date"),
-    slots: selectedSlots,
-    totalCost,
-  };
-
-  console.log("BOOKING:", bookingData);
-
-  await fetch("http://localhost:5000/booking", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(bookingData),
-  });
-
-  setIsOpen(false);
-  setSelectedSlots([]);
+const SLOT_PRICES = {
+  '08:00 - 09:00': 10,
+  '09:00 - 10:00': 20,
+  '10:00 - 11:00': 30,
+  '11:00 - 12:00': 40,
+  '12:00 - 13:00': 50,
+  '13:00 - 14:00': 60,
+  '14:00 - 15:00': 70,
+  '15:00 - 16:00': 80,
 };
+
+const BookNewModal = ({ book }) => {
+  const { roomName, description } = book
+  const { data } = authClient.useSession();
+  const user = data?.user;
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [date, setDate] = useState(() =>
+    new Date().toISOString().split('T')[0]
+  );
+
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const totalCost = selectedSlot ? SLOT_PRICES[selectedSlot] : 0;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user || !selectedSlot) return;
+
+    setIsSubmitting(true);
+
+    await fetch('http://localhost:5000/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user.id,
+        roomName,
+        description,
+        date,
+        slot: selectedSlot,
+        price: totalCost,
+      }),
+    });
+
+    setIsOpen(false);
+    setSelectedSlot(null);
+    setIsSubmitting(false);
+  };
 
   return (
     <>
-      {/* OPEN BUTTON */}
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full mt-8 bg-black text-purple-700 hover:bg-gray-100 font-bold py-4 rounded-2xl"
+        className="w-full py-3 rounded-xl bg-[#b5622a] text-white font-bold"
       >
         Book Now
       </button>
 
-      {/* MODAL */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3">
 
-          <div className="bg-white text-black w-full max-w-2xl rounded-3xl shadow-2xl overflow-y-auto max-h-[90vh]">
+          {/* 🔥 SMALL MODAL */}
+          <div className="w-full max-w-sm bg-white text-black rounded-2xl p-5 space-y-4 relative">
 
-            {/* HEADER */}
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-700 p-6 text-white relative">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute right-4 top-4"
-              >
-                <X />
-              </button>
+            {/* CLOSE */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute right-3 top-3"
+            >
+              <X size={18} />
+            </button>
 
-              <h2 className="text-2xl font-bold">{roomName}</h2>
-              <h2>{description}</h2>
+            {/* TITLE */}
+            <div>
+              <h2 className="text-lg font-bold">{roomName}</h2>
+              <p className="text-xs text-gray-500">{description}</p>
             </div>
 
-            {/* ✅ FORM START */}
-            <form onSubmit={onSubmit} className="p-6 space-y-6">
+            {/* DATE */}
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border rounded-lg p-2 text-sm"
+            />
 
-              {/* DATE */}
-              <div>
-                <label className="block mb-2">Select Date</label>
-                <input
-                  type="date"
-                  name="date"
-                  className="w-full border p-3 rounded-xl"
-                />
-              </div>
+            {/* TIME SLOTS */}
+            <div className="grid grid-cols-2 gap-2">
+              {TIME_SLOTS.map((slot) => {
+                const isSelected = selectedSlot === slot;
 
-              {/* TIME SLOTS */}
-              <div>
-                <label className="block mb-3">Select Time Slot</label>
+                return (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`text-[11px] p-2 rounded-lg border ${
+                      isSelected
+                        ? 'bg-[#b5622a] text-white'
+                        : 'bg-white'
+                    }`}
+                  >
+                    {slot}
+                  </button>
+                );
+              })}
+            </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  {TIME_SLOTS.map((slot) => (
-                    <button
-                      type="button"
-                      key={slot}
-                      onClick={() => toggleSlot(slot)}
-                      className={`p-3 border rounded-xl ${
-                        selectedSlots.includes(slot)
-                          ? "bg-purple-600 text-white"
-                          : "bg-white"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {/* PRICE */}
+            <div className="flex justify-between text-sm font-bold border-t pt-2">
+              <span>Total</span>
+              <span className="text-[#b5622a]">${totalCost}</span>
+            </div>
 
-              {/* SUMMARY */}
-              <div className="flex justify-between bg-gray-100 p-4 rounded-xl">
-                <p>Total: ${totalCost}</p>
-                <p>{selectedSlots.length} Hours</p>
-              </div>
-
-              {/* BUTTONS */}
-              <div className="flex gap-4">
-
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="w-1/3 border p-3 rounded-xl"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="w-2/3 bg-purple-600 text-white p-3 rounded-xl"
-                >
-                  Confirm Booking
-                </button>
-
-              </div>
-
-            </form>
-            {/* ✅ FORM END */}
+            {/* ACTIONS */}
+            <button
+              onClick={handleSubmit}
+              disabled={!selectedSlot || isSubmitting}
+              className="w-full py-2 rounded-lg bg-[#b5622a] text-white disabled:opacity-50"
+            >
+              {isSubmitting ? 'Booking...' : 'Confirm'}
+            </button>
 
           </div>
         </div>
