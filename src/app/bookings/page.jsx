@@ -6,7 +6,7 @@ const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/booking")
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`)
       .then((res) => res.json())
       .then((data) => setBookings(data));
   }, []);

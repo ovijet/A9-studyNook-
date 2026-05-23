@@ -2,7 +2,7 @@ import RoomCard from "@/component/RoomCard";
 import React from "react";
 
 const AllRooms = async () => {
-  const res = await fetch("http://localhost:5000/study");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/study`);
   const data = await res.json();
   console.log(data, "fffffffff");
   return (

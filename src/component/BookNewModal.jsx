@@ -47,7 +47,7 @@ const BookNewModal = ({ book }) => {
 
     setIsSubmitting(true);
 
-    await fetch('http://localhost:5000/booking', {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
