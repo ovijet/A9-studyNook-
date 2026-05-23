@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 import {
   Button,
   Card,
@@ -22,20 +22,21 @@ export default function SignUpPage() {
 
     const formdata = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formdata.entries());
-    const { email, password } = userData;
-
-    const { data, error } = await authClient.signIn.email({
-      email,
-      password,
+    // const { email, password } = userData;
+const { data, error } = await signIn.email({
+        ...userData
     });
 
+    if (error) {
+      alert('error');
+      return;
+    }
+
     if (data) {
-      alert("login successful");
+      alert("Signup successful");
       router.push("/");
     }
-    if (error) {
-      alert("error ");
-    }
+    
   };
 
   return (

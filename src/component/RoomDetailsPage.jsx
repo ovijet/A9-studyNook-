@@ -4,6 +4,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import BookNewModal from './BookNewModal';
 
 const RoomDetailsPage = ({ book }) => {
   const {
@@ -224,9 +225,11 @@ const RoomDetailsPage = ({ book }) => {
 
               </div>
 
-              <button className="w-full mt-8 bg-white text-purple-700 hover:bg-gray-100 font-bold py-4 rounded-2xl transition-all duration-300 text-lg shadow-lg">
+              {/* <button className="w-full mt-8 bg-white text-purple-700 hover:bg-gray-100 font-bold py-4 rounded-2xl transition-all duration-300 text-lg shadow-lg">
                 Book Now
-              </button>
+              </button> */}
+
+              <BookNewModal book={book}/>
 
             </div>
 

@@ -1,38 +1,3 @@
-// import MyBookingDetails from '@/component/MyBookingDetails';
-// import { auth } from '@/lib/auth';
-// import { headers } from 'next/headers';
-// import React from 'react';
-
-// const MyBooking = async() => {
-
-// const session = await auth.api.getSession({
-//     headers: await headers() // you need to pass the headers object.
-// })
-
-// const user =session?.user
-
-// console.log(user);
-
-// const res =await fetch(`http://localhost:5000/booking/${user?.id}`)
-
-// const bookingData =await res.json()
-// console.log(bookingData);
-
-//     return (
-//         <div>
-//             <h1>mybooks</h1>
-
-//             <div>
-//                 {
-//                 // bookingData.map(booking=> <MyBookingDetails key={booking._id} booking={booking}/>)
-//                 }
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default MyBooking;
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -47,19 +12,48 @@ const BookingsPage = () => {
   }, []);
 
   return (
-    <div className="">
-      <h1 className="text-3xl font-bold">My Bookings</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">My Bookings</h1>
 
-      <div className="grid gap-5">
-        {bookings.map((item) => (
-          <div key={item._id} >
-            <h1>{item.name}</h1>
+      <div className="overflow-x-auto rounded-3xl border shadow bg-white">
+        <table className="w-full text-left border-collapse">
 
-            <p>{item.email}</p>
+          {/* HEADER */}
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-4">Room</th>
+              <th className="p-4">Date</th>
+              <th className="p-4">Time</th>
+              <th className="p-4">Cost</th>
+            </tr>
+          </thead>
 
-            <p>{item.phone}</p>
-          </div>
-        ))}
+          {/* BODY */}
+          <tbody>
+            {bookings.map((item) => (
+              <tr key={item._id} className="border-t">
+
+                <td className="p-4 font-bold">
+                  {item.roomName}
+                </td>
+
+                <td className="p-4">
+                  {item.date}
+                </td>
+
+                <td className="p-4">
+                  {item.slots?.join(", ")}
+                </td>
+
+                <td className="p-4 font-bold">
+                  ${item.totalCost}
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
       </div>
     </div>
   );

@@ -14,47 +14,50 @@ import {
 } from "@heroui/react";
 
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signUp } from "@/lib/auth-client";
+import { signUpEmail } from "better-auth/api";
 
 const RegisterPage = () => {
   const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
-    const { name, email, password, image } = userData;
+
+    
+
     console.log(userData);
 
+    const { data, error } = await signUp.email({
+        ...userData
+    });
 
-    const {data,error}=await authClient.signUp.email({
-      name,
-      email,
-      password,
-      image
-    })
-    
-    if (data) {
-      alert("register successful");
-      router.push("/");
-    }
     if (error) {
-      alert("already signup with email");
+      alert('error');
       return;
+    }
+
+    if (data) {
+      alert("Signup successful");
+      router.push("/");
     }
   };
 
-  // const GoogleSignUp = async () => {
-  //   const { data, error } = await authClient.signIn.social({
-  //     provider: "google",
-  //   });
+  // Google Sign Up
+  const GoogleSignUp = async () => {
+    const { data, error } = await authClient.signIn.social({
+      provider: "google",
+    });
 
-  //   if (error) {
-  //     alert(error.message);
-  //     return;
-  //   }
-  //   return data;
-  
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -85,7 +88,9 @@ const RegisterPage = () => {
             name="email"
             type="email"
             validate={(value) => {
-              if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+              if (
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
+              ) {
                 return "Please enter a valid email address";
               }
               return null;
@@ -142,7 +147,7 @@ const RegisterPage = () => {
 
         {/* Google Button */}
         <Button
-          // onClick={GoogleSignUp}
+          onClick={GoogleSignUp}
           variant="bordered"
           className="w-full flex items-center justify-center gap-2"
         >
