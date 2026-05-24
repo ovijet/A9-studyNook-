@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import { authClient, signUp } from "@/lib/auth-client";
 import { signUpEmail } from "better-auth/api";
+import { google } from "better-auth";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -47,9 +48,17 @@ const RegisterPage = () => {
 
   // Google Sign Up
   const GoogleSignUp = async () => {
-    const { data, error } = await authClient.signIn.social({
-      provider: "google",
-    });
+    // const { data, error } = await authClient.signIn.social({
+    //   provider: "google",
+    // });
+
+    const {data,error}=await authClient.signIn.social({
+      provider:'google',
+    })
+     if (data) {
+      alert("Signup successful");
+      router.push("/");
+    }
 
     if (error) {
       alert(error.message);
