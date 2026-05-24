@@ -34,7 +34,7 @@ const BookingsPage = () => {
               <tr key={item._id} className="border-t">
 
                 <td className="p-4 font-bold">
-                  {item.roomName}
+                 {item.image} {item.roomName}
                 </td>
 
                 <td className="p-4">
@@ -42,12 +42,14 @@ const BookingsPage = () => {
                 </td>
 
                 <td className="p-4">
-                  {item.slots?.join(", ")}
+                  {item.slot}
                 </td>
 
                 <td className="p-4 font-bold">
-                  ${item.totalCost}
+                  ${item.price}
                 </td>
+
+                
 
               </tr>
             ))}

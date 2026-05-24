@@ -25,38 +25,91 @@ const AddRoomPage = () => {
         }
     };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const room = Object.fromEntries(formData.entries());
+    // const onSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const formData = new FormData(e.currentTarget);
+    //     const room = Object.fromEntries(formData.entries());
 
-        room.amenities = selectedAmenities;
-        room.capacity = Number(room.capacity);
-        room.hourlyRate = Number(room.hourlyRate);
-        room.floor = room.floor ? Number(room.floor) : null;
-
-
-        const {data:tokenData}=await authClient.token()
-        console.log(tokenData);
+    //     room.amenities = selectedAmenities;
+    //     room.capacity = Number(room.capacity);
+    //     room.hourlyRate = Number(room.hourlyRate);
+    //     room.floor = room.floor ? Number(room.floor) : null;
 
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/study`, {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json',
-                authorization:`Bearer ${tokenData?.token}`
-            },
-            body: JSON.stringify(room)
-        });
-        const data = await res.json();
-        if(res){
-            toast.success(`Successfully Added Room`)
-            redirect('/Rooms')
-        }else {
-        toast.error(data?.message || "Failed to add room");
-        }
-    };
+    //     const {data:tokenData}=await authClient.token()
+    //     console.log(tokenData);
+
+
+    //     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/study`, {
+    //         method: "POST",
+    //         headers: {
+    //             'Content-type': 'application/json',
+    //             authorization:`Bearer ${tokenData?.token}`
+    //         },
+    //         body: JSON.stringify(room)
+    //     });
+    //     const data = await res.json();
+    //     if(res){
+    //         toast.success(`Successfully Added Room`)
+    //         redirect('/Rooms')
+    //     }else {
+    //     toast.error(data?.message || "Failed to add room");
+    //     }
+    // };
     
+
+
+
+
+
+const onSubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.currentTarget);
+  const room = Object.fromEntries(formData.entries());
+
+  room.amenities = selectedAmenities;
+  room.capacity = Number(room.capacity);
+  room.hourlyRate = Number(room.hourlyRate);
+  room.floor = room.floor ? Number(room.floor) : null;
+
+  try {
+    const session = await authClient.getSession();
+
+    const email = session?.data?.user?.email;
+
+    if (!email) {
+      toast.error("User not logged in");
+      return;
+    }
+
+    // 🔥 IMPORTANT
+    room.ownerEmail = email;
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/study`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(room),
+      }
+    );
+
+    const data = await res.json();
+
+    if (res.ok) {
+      toast.success("Room added successfully");
+      redirect("/my-listings");
+    } else {
+      toast.error(data?.message || "Failed to add room");
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
 
     return (
         <div className="mx-auto px-4 py-6 md:p-8 max-w-7xl">
