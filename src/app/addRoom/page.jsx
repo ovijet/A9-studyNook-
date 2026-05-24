@@ -52,6 +52,8 @@ const AddRoomPage = () => {
         if(res){
             toast.success(`Successfully Added Room`)
             redirect('/Rooms')
+        }else {
+        toast.error(data?.message || "Failed to add room");
         }
     };
     
