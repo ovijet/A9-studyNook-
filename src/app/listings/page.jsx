@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'react-toastify';
 import RoomCard from '@/component/RoomCard';
+import ListingCard from '@/component/Listing';
 
 const MyListings = () => {
 
@@ -74,7 +75,7 @@ const MyListings = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {rooms.map((room, index) => (
-            <RoomCard
+            <ListingCard
               key={room._id}
               room={room}
               index={index}

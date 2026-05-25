@@ -1,110 +1,183 @@
 "use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, Button } from "@heroui/react";
-import Link from "next/link";
 import { FaBookOpen } from "react-icons/fa";
+import { HiMenuAlt3 } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const { data } = authClient.useSession();
   const user = data?.user;
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     await authClient.signOut();
   };
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Rooms", path: "/Rooms" },
+    { name: "Add Room", path: "/addRoom" },
+    { name: "My Listings", path: "/listings" },
+    { name: "My Bookings", path: "/bookings" },
+  ];
+
   return (
-    <div className="navbar bg-[#111815] text-white shadow-sm">
-      <nav className="flex justify-between items-center w-full max-w-7xl mx-auto py-1">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0b1110]/90 border-b border-white/10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="navbar px-0 min-h-[80px]">
+          
+          {/* LEFT */}
+          <div className="navbar-start">
+            
+            {/* Mobile Menu */}
+            <div className="dropdown lg:hidden">
+              <label
+                tabIndex={0}
+                className="btn btn-ghost text-white hover:bg-white/10"
               >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
-              </svg>
+                <HiMenuAlt3 size={24} />
+              </label>
+
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[100] p-3 shadow-2xl bg-[#121a18] rounded-2xl w-64 border border-white/10 space-y-1"
+              >
+                {navLinks.map((link) => (
+                  <li key={link.path}>
+                    <Link
+                      href={link.path}
+                      className={`rounded-xl text-sm ${
+                        pathname === link.path
+                          ? "bg-primary text-white"
+                          : "text-gray-300 hover:bg-white/10"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+
+                {!user && (
+                  <>
+                    <li className="pt-2">
+                      <Link
+                        href="/login"
+                        className="rounded-xl bg-white text-black font-medium justify-center"
+                      >
+                        Login
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link
+                        href="/register"
+                        className="rounded-xl border border-white/20 text-white justify-center"
+                      >
+                        Register
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </ul>
             </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+
+            {/* LOGO */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 group"
             >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
+              <motion.div
+                whileHover={{ rotate: -10, scale: 1.05 }}
+                className="w-11 h-11 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30"
+              >
+                <FaBookOpen className="text-white text-xl" />
+              </motion.div>
+
+              <div>
+                <h1 className="text-white text-2xl font-extrabold tracking-wide">
+                  StudyNook
+                </h1>
+
+                <p className="text-xs text-gray-400 -mt-1 hidden sm:block">
+                  Smart Study Room Booking
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          {/* CENTER */}
+          <div className="navbar-center hidden lg:flex">
+            <ul className="flex items-center gap-2   border-white/10 rounded-full px-3 py-2">
+              {navLinks.map((link) => {
+                const active = pathname === link.path;
+
+                return (
+                  <li key={link.path}>
+                    <Link
+                      href={link.path}
+                      className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        active
+                          ? "bg-primary text-white shadow-md"
+                          : "text-gray-300 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
                   </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
-              </li>
+                );
+              })}
             </ul>
           </div>
-          <a className="text-white text-2xl flex justify-center items-center gap-3">
-            <FaBookOpen className="text-green-700" /> StudyNook
-          </a>
-        </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="hidden md:flex items-center gap-6 text-[16px]">
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/Rooms">Rooms</Link>
-            </li>
-            <li>
-              <Link href="/addRoom">Add Room</Link>
-            </li>
-            <li>
-              <Link href="/listings">My Listings</Link>
-            </li>
-            <li>
-              <Link href="/bookings">My Bookings</Link>
-            </li>
-          </ul>
-        </div>
-        {!user ? (
-          <>
-            <div className="navbar-end gap-5">
-              <Link href="/login">Login</Link>
-              <Link href="/resister">Register</Link>
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center gap-3">
-            <Avatar size="sm">
-              <Avatar.Image referrerPolicy="no-referrer" src={user?.image} />
-              <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
-            </Avatar>
 
-            <Button
-              onClick={handleSignOut}
-              size="sm"
-              className="bg-orange-400 text-white"
-            >
-              SignOut
-            </Button>
+          {/* RIGHT */}
+          <div className="navbar-end">
+            {!user ? (
+              <div className="hidden sm:flex items-center gap-3">
+                <Link href="/login">
+                  <button className="px-5 py-2 rounded-full text-sm font-medium border border-white/20 text-white hover:bg-white/10 transition">
+                    Login
+                  </button>
+                </Link>
+
+                 <Link href="/resister"><button className="px-5 py-2 rounded-full text-sm font-semibold bg-primary text-white hover:scale-105 transition-all duration-300 shadow-lg shadow-primary/30">
+                    Register
+                  </button></Link>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                
+                {/* User Info */}
+                <div className="hidden md:block text-right">
+                  <h4 className="text-sm font-semibold text-white leading-none">
+                    {user?.name}
+                  </h4>
+
+                  <p className="text-xs text-gray-400 mt-1">
+                    Welcome Back
+                  </p>
+                </div>
+
+                {/* Avatar */}
+                <Avatar size="sm"> <Avatar.Image referrerPolicy="no-referrer" src={user?.image} /> <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback> </Avatar>
+
+                {/* Signout */}
+                <Button
+                  onClick={handleSignOut}
+                  size="sm"
+                  className="bg-gradient-to-r from-orange-500 to-red-500 text-white border-0 rounded-full px-5 font-medium hover:scale-105 transition-all duration-300"
+                >
+                  Sign Out
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </nav>
-    </div>
+        </div>
+      </div>
+    </header>
   );
 };
 
