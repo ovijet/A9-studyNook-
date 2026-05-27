@@ -247,8 +247,8 @@ const ListingDetailsPage = ({ book }) => {
 
       <div className='flex justify-end item-center gap-4 mt-5 max-w-6xl mx-auto'>
        
-              <EditModal book={book} key={book._id}/>
-              <DeleteModal book={book} key={book._id}/>
+              <EditModal book={book} />
+              <DeleteModal book={book} />
 
       </div>
 

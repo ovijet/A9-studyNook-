@@ -4,44 +4,43 @@ import { AlertDialog, Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-export function DeleteModal({ book }) {
+export function BookingDeleteModal({ item }) {
 
     const router=useRouter()
 
   const {
     _id,
     roomName,
-  } = book || {};
+  } = item || {};
 
   const handleDelete = async () => {
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/study/${_id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      const data = await res.json();
-
-      console.log(data);
-
-      if (res.ok) {
-      toast
-        router.push('/Rooms')
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${_id}`,
+      {
+        method: "DELETE",
       }
+    );
 
-    } catch (error) {
-      console.log(error);
+    const data = await res.json();
+
+    if (res.ok) {
+      toast.success("Booking deleted");
+
+      window.location.reload()
+    } else {
+      toast.error("Delete failed");
     }
-  };
-
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
+};
   return (
     <AlertDialog>
 
       <Button variant="danger">
-        Delete
+        Cancel
       </Button>
 
       <AlertDialog.Backdrop>

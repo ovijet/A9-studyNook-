@@ -55,6 +55,7 @@ const BookNewModal = ({ book }) => {
         userId: user.id,
         roomName,
         description,
+        image,
         date,
         slot: selectedSlot,
         price: totalCost,
@@ -93,13 +94,14 @@ const BookNewModal = ({ book }) => {
             <div>
               <h2 className="text-lg font-bold">{roomName}</h2>
               <p className="text-xs text-gray-500">{description}</p>
-               {/* <Image
-                        src={image}
-                        alt={roomName || 'Room'}
-                        fill
-                        priority
-                        className="object-cover"
-                      /> */}
+              <div className="relative w-full h-32">
+  <Image
+    src={image}
+    alt={roomName}
+    fill
+    className="object-cover"
+  />
+</div>
             </div>
 
             {/* DATE */}
