@@ -6,6 +6,10 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import BookNewModal from './BookNewModal';
 
+import { Button } from '@heroui/react';
+import EditModal from './EditModal';
+import { DeleteModal } from './Delete';
+
 const ListingDetailsPage = ({ book }) => {
   const {
     image,
@@ -18,10 +22,10 @@ const ListingDetailsPage = ({ book }) => {
     bookingCount,
   } = book || {};
 
-  const imageSrc =
-    image && image.startsWith('http')
-      ? image
-      : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb';
+  // const imageSrc =
+  //   image && image.startsWith('http')
+  //     ? image
+  //     : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb';
 
   const getAmenityIcon = (amenity) => {
     const iconMap = {
@@ -46,7 +50,7 @@ const ListingDetailsPage = ({ book }) => {
       <div className="relative w-full h-[350px] md:h-[550px] overflow-hidden">
 
         <Image
-          src={imageSrc}
+          src={image}
           alt={roomName || 'Room'}
           fill
           priority
@@ -234,11 +238,23 @@ const ListingDetailsPage = ({ book }) => {
             </div>
 
           </div>
-          oviiiiiiiiiiiiiiiii
+
+       
 
         </div>
 
       </div>
+
+      <div className='flex justify-end item-center gap-4 mt-5 max-w-6xl mx-auto'>
+       
+              <EditModal book={book} key={book._id}/>
+              <DeleteModal book={book} key={book._id}/>
+
+      </div>
+
+           {/* <Button variant="danger">Delete</Button> */}
+          
+      
     </div>
   );
 };

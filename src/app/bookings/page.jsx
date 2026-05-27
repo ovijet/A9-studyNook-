@@ -25,6 +25,8 @@ const BookingsPage = () => {
               <th className="p-4">Date</th>
               <th className="p-4">Time</th>
               <th className="p-4">Cost</th>
+              {/* <th className="p-4">Status</th> */}
+              <th className="p-4">Actions</th>
             </tr>
           </thead>
 
@@ -49,7 +51,11 @@ const BookingsPage = () => {
                   ${item.price}
                 </td>
 
-                
+                <td className="p-4">
+                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                    canceled
+                  </span>
+                </td>
 
               </tr>
             ))}

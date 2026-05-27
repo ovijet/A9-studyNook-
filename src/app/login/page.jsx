@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -22,13 +22,13 @@ export default function SignUpPage() {
 
     const formdata = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formdata.entries());
-    // const { email, password } = userData;
-const { data, error } = await signIn.email({
-        ...userData
+
+    const { data, error } = await signIn.email({
+      ...userData,
     });
 
     if (error) {
-      alert('error');
+      alert("error");
       return;
     }
 
@@ -36,80 +36,137 @@ const { data, error } = await signIn.email({
       alert("Signup successful");
       router.push("/");
     }
-    
+  };
+
+  const GoogleSignIn = async () => {
+    const { data, error } = await authClient.signIn.social({
+      provider: "google",
+    });
+
+    if (data) {
+      alert("Signup successful");
+      router.push("/");
+    }
+
+    if (error) {
+      alert("error");
+    }
   };
 
   return (
-    <Card className="border mx-auto w-full max-w-md px-4 sm:px-6 py-8 mt-6">
-      <h1 className="text-center text-xl sm:text-2xl font-bold">Sign In</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-950 dark:to-slate-900 px-4">
+      <Card className="w-full mt-5 mb-5 max-w-md shadow-2xl rounded-2xl border border-slate-200 dark:border-slate-800">
 
-      <Form className="flex w-full flex-col gap-4 mt-4" onSubmit={onSubmit}>
-        <TextField
-          isRequired
-          name="email"
-          type="email"
-          validate={(value) => {
-            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-              return "Please enter a valid email address";
-            }
-            successful;
-            return null;
-          }}
-        >
-          <Label>Email</Label>
-          <Input placeholder="john@example.com" />
-          <FieldError />
-        </TextField>
-
-        <TextField
-          isRequired
-          minLength={8}
-          name="password"
-          type="password"
-          validate={(value) => {
-            if (value.length < 8) {
-              return "Password must be at least 8 characters";
-            }
-            if (!/[A-Z]/.test(value)) {
-              return "Password must contain at least one uppercase letter";
-            }
-            if (!/[0-9]/.test(value)) {
-              return "Password must contain at least one number";
-            }
-            return null;
-          }}
-        >
-          <Label>Password</Label>
-          <Input placeholder="Enter your password" />
-          <Description>
-            Must be at least 8 characters with 1 uppercase and 1 number
-          </Description>
-          <FieldError />
-        </TextField>
-
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-          <Button type="reset" variant="secondary" className="w-full">
-            Reset
-          </Button>
+        {/* Header */}
+        <div className="text-center pt-8 pb-2">
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
+            Login to StudyNook
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Welcome back. Pick up where you left off.
+          </p>
         </div>
-      </Form>
 
-      <p className="text-center my-3 text-sm">or</p>
-      <Button className="w-full" onClick={() => router.push("/signup")}>
-        Dont have an account? Sign Up
-      </Button>
+        <Form onSubmit={onSubmit} className="px-6  py-6 space-y-5">
 
-      <Button
-        // onClick={handleGoogleSignIn}
-        variant="outline"
-        className="w-full flex items-center justify-center gap-2"
-      >
-        <FaGoogle /> Sign in with Google
-      </Button>
-    </Card>
+          {/* Email */}
+          <TextField
+            isRequired
+            name="email"
+            type="email"
+            validate={(value) => {
+              if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+                return "Please enter a valid email address";
+              }
+              return null;
+            }}
+          >
+            <Label>Email Address</Label>
+            <Input
+              placeholder="john@example.com"
+              className="rounded-lg"
+            />
+            <FieldError />
+          </TextField>
+
+          {/* Password */}
+          <TextField
+            isRequired
+            minLength={8}
+            name="password"
+            type="password"
+            validate={(value) => {
+              if (value.length < 8) {
+                return "Password must be at least 8 characters";
+              }
+              if (!/[A-Z]/.test(value)) {
+                return "Must contain uppercase letter";
+              }
+              if (!/[0-9]/.test(value)) {
+                return "Must contain a number";
+              }
+              return null;
+            }}
+          >
+            <Label>Password</Label>
+            <Input
+              placeholder="Enter your password"
+              className="rounded-lg"
+            />
+            <Description className="text-xs">
+              8+ chars, 1 uppercase, 1 number
+            </Description>
+            <FieldError />
+          </TextField>
+
+          {/* Buttons */}
+          <div className="flex flex-col gap-3 pt-2">
+            <Button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg py-3 font-medium transition"
+            >
+              Sign In
+            </Button>
+
+            <Button
+              type="reset"
+              variant="bordered"
+              className="w-full rounded-lg py-3"
+            >
+              Reset
+            </Button>
+          </div>
+        </Form>
+
+        {/* Divider */}
+        <div className="flex items-center gap-3 px-6 my-4">
+          <div className="h-px bg-slate-200 dark:bg-slate-700 flex-1" />
+          <span className="text-xs text-slate-500">OR</span>
+          <div className="h-px bg-slate-200 dark:bg-slate-700 flex-1" />
+        </div>
+
+        {/* Bottom Actions */}
+        <div className="px-6 pb-8 flex flex-col gap-3">
+
+          <Button
+            onClick={() => router.push("/resister")}
+            variant="bordered"
+            className="w-full rounded-lg py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            Create New Account
+          </Button>
+
+          <Button
+            onClick={GoogleSignIn}
+            variant="bordered"
+            className="w-full flex items-center justify-center gap-2 rounded-lg py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <FcGoogle size={20} />
+            Continue with Google
+          </Button>
+
+        </div>
+      </Card>
+    </div>
   );
 }

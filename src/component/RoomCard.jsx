@@ -20,10 +20,10 @@ const RoomCard = ({ room, index = 0 }) => {
     amenities = [],
   } = room;
 
-  const imageSrc =
-    image && image.startsWith('http')
-      ? image
-      : "https://images.unsplash.com/photo-1506744038136-46273834b3fb";
+  // const imageSrc =
+  //   image && image.startsWith('http')
+  //     ? image
+  //     : "https://images.unsplash.com/photo-1506744038136-46273834b3fb";
 
   const visibleAmenities = amenities.slice(0, 3);
   const remainingCount = amenities.length - 3;
@@ -63,9 +63,9 @@ const RoomCard = ({ room, index = 0 }) => {
     >
       {/* Image */}
       <div className="overflow-hidden relative h-60">
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div whileHover={{ scale: 1.05 }} className="w-full h-full">
           <Image
-            src={imageSrc}
+            src={image}
             fill
             alt={roomName || 'Room'}
             className="object-cover"
@@ -84,7 +84,7 @@ const RoomCard = ({ room, index = 0 }) => {
           </div>
 
           <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-            ${hourlyRate}
+            {hourlyRate}
           </div>
         </div>
 

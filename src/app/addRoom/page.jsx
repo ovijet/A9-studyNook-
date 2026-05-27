@@ -1,7 +1,7 @@
 "use client";
 import { authClient } from "@/lib/auth-client";
 import { Input, TextArea, TextField, Button, Card } from "@heroui/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -17,6 +17,8 @@ const amenities = [
 const AddRoomPage = () => {
     const [selectedAmenities, setSelectedAmenities] = useState([]);
 
+    const router=useRouter()
+
     const handleCheckboxChange = (amenityLabel) => {
         if (selectedAmenities.includes(amenityLabel)) {
             setSelectedAmenities(selectedAmenities.filter(a => a !== amenityLabel));
@@ -24,42 +26,6 @@ const AddRoomPage = () => {
             setSelectedAmenities([...selectedAmenities, amenityLabel]);
         }
     };
-
-    // const onSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const formData = new FormData(e.currentTarget);
-    //     const room = Object.fromEntries(formData.entries());
-
-    //     room.amenities = selectedAmenities;
-    //     room.capacity = Number(room.capacity);
-    //     room.hourlyRate = Number(room.hourlyRate);
-    //     room.floor = room.floor ? Number(room.floor) : null;
-
-
-    //     const {data:tokenData}=await authClient.token()
-    //     console.log(tokenData);
-
-
-    //     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/study`, {
-    //         method: "POST",
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //             authorization:`Bearer ${tokenData?.token}`
-    //         },
-    //         body: JSON.stringify(room)
-    //     });
-    //     const data = await res.json();
-    //     if(res){
-    //         toast.success(`Successfully Added Room`)
-    //         redirect('/Rooms')
-    //     }else {
-    //     toast.error(data?.message || "Failed to add room");
-    //     }
-    // };
-    
-
-
-
 
 
 const onSubmit = async (e) => {
@@ -101,13 +67,13 @@ const onSubmit = async (e) => {
 
     if (res.ok) {
       toast.success("Room added successfully");
-      redirect("/my-listings");
+      router.push("/listings");
     } else {
       toast.error(data?.message || "Failed to add room");
     }
   } catch (error) {
     console.log(error);
-    toast.error("Something went wrong");
+    // toast.error("Something went wrong");
   }
 };
 
@@ -225,7 +191,7 @@ const onSubmit = async (e) => {
                                 <TextField isRequired>
                                     <Label>Image URL</Label>
                                     <Input
-                                        name="imageUrl"
+                                        name="image"
                                         type="url"
                                         placeholder="https://example.com/room.jpg"
                                         radius="lg"

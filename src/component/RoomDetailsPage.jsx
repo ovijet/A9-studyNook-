@@ -61,7 +61,7 @@ const RoomDetailsPage = ({ book }) => {
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.9 }}
           >
             <div className="inline-block bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium mb-4">
               Premium Study Room

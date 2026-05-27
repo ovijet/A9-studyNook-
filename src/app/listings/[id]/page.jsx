@@ -1,4 +1,4 @@
-import ListingDetailsPage from "@/component/ListingPage";
+import ListingDetailsPage from "@/component/ListingDetailsPage";
 import RoomDetailsPage from "@/component/RoomDetailsPage";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";

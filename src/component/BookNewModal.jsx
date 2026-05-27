@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, X } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
+import Image from 'next/image';
 
 const TIME_SLOTS = [
   '08:00 - 09:00',
@@ -27,7 +28,7 @@ const SLOT_PRICES = {
 };
 
 const BookNewModal = ({ book }) => {
-  const { roomName, description } = book
+  const { roomName, description,image} = book
   const { data } = authClient.useSession();
   const user = data?.user;
 
@@ -92,6 +93,13 @@ const BookNewModal = ({ book }) => {
             <div>
               <h2 className="text-lg font-bold">{roomName}</h2>
               <p className="text-xs text-gray-500">{description}</p>
+               {/* <Image
+                        src={image}
+                        alt={roomName || 'Room'}
+                        fill
+                        priority
+                        className="object-cover"
+                      /> */}
             </div>
 
             {/* DATE */}
