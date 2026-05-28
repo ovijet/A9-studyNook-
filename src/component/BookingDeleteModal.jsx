@@ -1,12 +1,12 @@
 "use client";
 
 import { AlertDialog, Button } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-export function BookingDeleteModal({ item }) {
-
-    const router=useRouter()
+export function BookingDeleteModal({
+  item,
+  setBookings,
+}) {
 
   const {
     _id,
@@ -14,28 +14,48 @@ export function BookingDeleteModal({ item }) {
   } = item || {};
 
   const handleDelete = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${_id}`,
-      {
-        method: "DELETE",
+    try {
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${_id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: "cancelled",
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+
+        toast.success("Booking cancelled");
+
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking._id === _id
+              ? {
+                  ...booking,
+                  status: "cancelled",
+                }
+              : booking
+          )
+        );
+
+      } else {
+        toast.error("Cancel failed");
       }
-    );
 
-    const data = await res.json();
-
-    if (res.ok) {
-      toast.success("Booking deleted");
-
-      window.location.reload()
-    } else {
-      toast.error("Delete failed");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
     }
-  } catch (error) {
-    console.log(error);
-    toast.error("Something went wrong");
-  }
-};
+  };
+
   return (
     <AlertDialog>
 
@@ -45,30 +65,35 @@ export function BookingDeleteModal({ item }) {
 
       <AlertDialog.Backdrop>
         <AlertDialog.Container>
+
           <AlertDialog.Dialog className="sm:max-w-[400px]">
 
             <AlertDialog.CloseTrigger />
 
             <AlertDialog.Header>
+
               <AlertDialog.Icon status="danger" />
 
               <AlertDialog.Heading>
-                Delete room permanently?
+                Cancel booking?
               </AlertDialog.Heading>
+
             </AlertDialog.Header>
 
             <AlertDialog.Body>
               <p>
-                This will permanently delete{" "}
-                <strong>{roomName}</strong>.
-                This action cannot be undone.
+                Are you sure you want to cancel{" "}
+                <strong>{roomName}</strong> ?
               </p>
             </AlertDialog.Body>
 
             <AlertDialog.Footer>
 
-              <Button slot="close" variant="tertiary">
-                Cancel
+              <Button
+                slot="close"
+                variant="tertiary"
+              >
+                Close
               </Button>
 
               <Button
@@ -76,14 +101,16 @@ export function BookingDeleteModal({ item }) {
                 slot="close"
                 variant="danger"
               >
-                Delete
+                Confirm Cancel
               </Button>
 
             </AlertDialog.Footer>
 
           </AlertDialog.Dialog>
+
         </AlertDialog.Container>
       </AlertDialog.Backdrop>
+
     </AlertDialog>
   );
 }
