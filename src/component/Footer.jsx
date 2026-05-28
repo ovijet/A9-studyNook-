@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import { FaBookOpen } from "react-icons/fa";
 import {
@@ -10,106 +9,118 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#18211E] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-10 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+    <footer className="bg-white border-t border-gray-200 text-gray-700">
+
+      <div className="max-w-7xl mx-auto px-6 py-12 grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+
         {/* Logo + About */}
         <aside className="space-y-4">
-          <div className="flex gap-3 items-center">
-            <h3 className="font-bold text-2xl flex justify-center item-center gap-4">
-              <FaBookOpen className="text-green-700" /> StudyNook
+
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-md">
+              <FaBookOpen className="text-white" />
+            </div>
+
+            <h3 className="font-bold text-2xl text-gray-900">
+              StudyNook
             </h3>
           </div>
 
-          <p className="text-sm text-gray-400 leading-6">
-            Quiet study rooms, booked by the hour. Built for students, scholars,
-            and lifelong learners.
+          <p className="text-sm text-gray-500 leading-6">
+            Quiet study rooms, booked by the hour. Built for students,
+            scholars, and lifelong learners.
           </p>
+
         </aside>
 
         {/* Contact */}
         <nav className="space-y-3">
-          <h6 className="font-semibold text-lg text-white">Contact Info</h6>
+          <h6 className="font-semibold text-lg text-gray-900">
+            Contact Info
+          </h6>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Email: info@suncart.com
           </p>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Phone: +880 1234-567890
           </p>
 
-          <p className="text-sm text-gray-400">Address: Dhaka, Bangladesh</p>
+          <p className="text-sm text-gray-500">
+            Address: Dhaka, Bangladesh
+          </p>
         </nav>
 
         {/* Links */}
         <nav className="space-y-3">
-          <h6 className="font-semibold text-lg text-white">Quick Links</h6>
+          <h6 className="font-semibold text-lg text-gray-900">
+            Quick Links
+          </h6>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Terms of Service
           </p>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Privacy Policy
           </p>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Cookie Policy
           </p>
 
-          <p className="text-sm text-gray-400 hover:text-orange-500 transition cursor-pointer">
+          <p className="text-sm text-gray-500 hover:text-orange-500 transition cursor-pointer">
             Press Kit
           </p>
         </nav>
 
         {/* Social */}
         <nav className="space-y-3">
-          <h6 className="font-semibold text-lg text-white">Social Links</h6>
+          <h6 className="font-semibold text-lg text-gray-900">
+            Social Links
+          </h6>
 
           <div className="flex gap-4 text-2xl">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-600 transition"
-            >
+
+            <a href="#" className="text-gray-500 hover:text-blue-600 transition">
               <FaFacebook />
             </a>
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-500 transition"
-            >
+            <a href="#" className="text-gray-500 hover:text-sky-500 transition">
               <FaTwitter />
             </a>
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-pink-500 transition"
-            >
+            <a href="#" className="text-gray-500 hover:text-pink-500 transition">
               <FaInstagram />
             </a>
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-700 transition"
-            >
+            <a href="#" className="text-gray-500 hover:text-blue-700 transition">
               <FaLinkedin />
             </a>
+
           </div>
         </nav>
+
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-700 max-w-7xl mx-auto  py-4 text-sm text-gray-400">
-        © {new Date().getFullYear()} SunCart. All rights reserved.
+      <div className="border-t border-gray-200">
+
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} StudyNook. All rights reserved.
+          </p>
+
+          <p className="text-sm text-gray-400">
+            Built with ❤️ for students
+          </p>
+
+        </div>
+
       </div>
+
     </footer>
   );
 };

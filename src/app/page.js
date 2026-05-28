@@ -4,6 +4,8 @@ import Image from "next/image";
 import AllRooms from "./Rooms/page";
 import FeaturedRooms from "@/component/FeaturedRoom";
 import FeaturedRoom from "@/component/Featured";
+import StudyNookCard from "@/component/StudyNookCard";
+import BookWorks from "@/component/BookWorks";
 
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
       {/* <AllRooms /> */}
       {/* <FeaturedRooms/> */}
       <FeaturedRoom/>
+      <StudyNookCard/>
+      <BookWorks/>
     </div>
   );
 }

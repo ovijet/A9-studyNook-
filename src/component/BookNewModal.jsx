@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Clock, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 const TIME_SLOTS = [
   '08:00 - 09:00',
@@ -28,27 +29,28 @@ const SLOT_PRICES = {
 };
 
 const BookNewModal = ({ book }) => {
-  const { roomName, description,image} = book
+  const { roomName, description, image } = book;
+
   const { data } = authClient.useSession();
   const user = data?.user;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState(() =>
+  const [date, setDate] = useState(
     new Date().toISOString().split('T')[0]
   );
-
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const totalCost = selectedSlot ? SLOT_PRICES[selectedSlot] : 0;
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!user || !selectedSlot) return;
+  e.preventDefault();
+  if (!user || !selectedSlot) return;
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -62,93 +64,133 @@ const BookNewModal = ({ book }) => {
       }),
     });
 
+    const data = await res.json();
+
+   
+    if (!res.ok) {
+      
+      toast.error(data.message || "Already booked for this slot!")
+      setIsSubmitting(false);
+      return;
+    }
+
+    toast("Booking successful!");
+
     setIsOpen(false);
     setSelectedSlot(null);
-    setIsSubmitting(false);
-  };
+
+  } catch (error) {
+    toast("Something went wrong!");
+  }
+
+  setIsSubmitting(false);
+};
 
   return (
     <>
+      {/* OPEN BUTTON */}
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full py-3 rounded-xl bg-[#b5622a] text-white font-bold"
+        className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition"
       >
         Book Now
       </button>
 
+      {/* MODAL */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-3">
 
-          {/* 🔥 SMALL MODAL */}
-          <div className="w-full max-w-sm bg-white text-black rounded-2xl p-5 space-y-4 relative">
+          <div className="w-full max-w-md  bg-white rounded-3xl shadow-2xl overflow-hidden relative">
 
             {/* CLOSE */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute right-3 top-3"
+              className="absolute right-4 top-4 text-gray-500 hover:text-gray-800"
             >
               <X size={18} />
             </button>
 
-            {/* TITLE */}
-            <div>
-              <h2 className="text-lg font-bold">{roomName}</h2>
-              <p className="text-xs text-gray-500">{description}</p>
-              <div className="relative w-full h-32">
-  <Image
-    src={image}
-    alt={roomName}
-    fill
-    className="object-cover"
-  />
-</div>
+            {/* HEADER IMAGE */}
+            <div className="relative h-40 w-full">
+              <Image
+                src={image}
+                alt={roomName}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+
+              <div className="absolute bottom-3 left-4 text-white">
+                <h2 className="text-lg font-bold">{roomName}</h2>
+                <p className="text-xs text-gray-200">
+                  {description?.slice(0, 60)}...
+                </p>
+              </div>
             </div>
 
-            {/* DATE */}
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full border rounded-lg p-2 text-sm"
-            />
+            {/* BODY */}
+            <div className="p-5 space-y-4">
 
-            {/* TIME SLOTS */}
-            <div className="grid grid-cols-2 gap-2">
-              {TIME_SLOTS.map((slot) => {
-                const isSelected = selectedSlot === slot;
+              {/* DATE */}
+              <div>
+                <label className="text-sm text-gray-600 mb-1 block">
+                  Select Date
+                </label>
 
-                return (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`text-[11px] p-2 rounded-lg border ${
-                      isSelected
-                        ? 'bg-[#b5622a] text-white'
-                        : 'bg-white'
-                    }`}
-                  >
-                    {slot}
-                  </button>
-                );
-              })}
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full border border-gray-200 rounded-xl p-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                />
+              </div>
+
+              {/* TIME SLOTS */}
+              <div>
+                <label className="text-sm text-gray-600 mb-2 block">
+                  Choose Time Slot
+                </label>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {TIME_SLOTS.map((slot) => {
+                    const isSelected = selectedSlot === slot;
+
+                    return (
+                      <button
+                        key={slot}
+                        type="button"
+                        onClick={() => setSelectedSlot(slot)}
+                        className={`text-xs p-2 rounded-xl border transition ${
+                          isSelected
+                            ? 'bg-orange-500 text-white border-orange-500'
+                            : 'bg-white text-gray-700 hover:border-orange-300'
+                        }`}
+                      >
+                        {slot}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* PRICE */}
+              <div className="flex justify-between items-center border-t pt-3">
+                <span className="text-sm text-gray-600">Total</span>
+                <span className="text-lg font-bold text-orange-500">
+                  ${totalCost}
+                </span>
+              </div>
+
+              {/* BUTTON */}
+              <button
+                onClick={handleSubmit}
+                disabled={!selectedSlot || isSubmitting}
+                className="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold disabled:opacity-50 transition"
+              >
+                {isSubmitting ? 'Booking...' : 'Confirm Booking'}
+              </button>
+
             </div>
-
-            {/* PRICE */}
-            <div className="flex justify-between text-sm font-bold border-t pt-2">
-              <span>Total</span>
-              <span className="text-[#b5622a]">${totalCost}</span>
-            </div>
-
-            {/* ACTIONS */}
-            <button
-              onClick={handleSubmit}
-              disabled={!selectedSlot || isSubmitting}
-              className="w-full py-2 rounded-lg bg-[#b5622a] text-white disabled:opacity-50"
-            >
-              {isSubmitting ? 'Booking...' : 'Confirm'}
-            </button>
-
           </div>
         </div>
       )}

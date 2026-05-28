@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -19,11 +18,6 @@ const RoomCard = ({ room, index = 0 }) => {
     hourlyRate,
     amenities = [],
   } = room;
-
-  // const imageSrc =
-  //   image && image.startsWith('http')
-  //     ? image
-  //     : "https://images.unsplash.com/photo-1506744038136-46273834b3fb";
 
   const visibleAmenities = amenities.slice(0, 3);
   const remainingCount = amenities.length - 3;
@@ -52,17 +46,16 @@ const RoomCard = ({ room, index = 0 }) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 80 }}
+      initial={{ opacity: 0, y: 60 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.1,
-      }}
-      whileHover={{ y: -8 }}
-      className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100"
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      whileHover={{ y: -6 }}
+      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200"
     >
-      {/* Image */}
-      <div className="overflow-hidden relative h-60">
+
+      {/* IMAGE */}
+      <div className="relative h-56 overflow-hidden">
+
         <motion.div whileHover={{ scale: 1.05 }} className="w-full h-full">
           <Image
             src={image}
@@ -71,64 +64,63 @@ const RoomCard = ({ room, index = 0 }) => {
             className="object-cover"
           />
         </motion.div>
-      </div>
 
-      {/* Content */}
-      <div className="p-5 space-y-4">
-        {/* Title + Price */}
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mt-3">
-              {roomName}
-            </h2>
-          </div>
-
-          <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-            {hourlyRate}
-          </div>
+        {/* Price badge */}
+        <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-orange-600 px-3 py-1 rounded-full text-sm font-semibold shadow">
+          {hourlyRate}
         </div>
 
-        {/* Description */}
-        <p className="text-gray-600 text-sm leading-relaxed">
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-5 space-y-4">
+
+        {/* TITLE */}
+        <h2 className="text-xl font-bold text-gray-900">
+          {roomName}
+        </h2>
+
+        {/* DESCRIPTION */}
+        <p className="text-gray-500 text-sm leading-relaxed">
           {description?.slice(0, 100)}...
         </p>
 
-        {/* Capacity */}
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-gray-700">
-            🪑 {capacity} Seats
-          </p>
+        {/* META */}
+        <div className="flex items-center justify-between text-sm text-gray-600">
 
-          <p className="text-sm text-gray-500 mt-1">
-            📍 {floor}
-          </p>
+          <p>🪑 {capacity} Seats</p>
+          <p>📍 {floor}</p>
+
         </div>
 
-        {/* Amenities */}
-        <div className="flex flex-wrap gap-2 pt-2">
+        {/* AMENITIES */}
+        <div className="flex flex-wrap gap-2">
+
           {visibleAmenities.map((item, idx) => (
             <span
               key={idx}
-              className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full"
+              className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full"
             >
               {getAmenityIcon(item)} {item}
             </span>
           ))}
 
           {remainingCount > 0 && (
-            <span className="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full">
+            <span className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full">
               +{remainingCount} more
             </span>
           )}
+
         </div>
 
-        {/* Button */}
+        {/* BUTTON */}
         <Link
           href={`/Rooms/${_id}`}
-          className="block text-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl transition-all duration-300"
+          className="block text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition"
         >
           View Details
         </Link>
+
       </div>
     </motion.div>
   );
