@@ -155,7 +155,7 @@ const RoomFilter = () => {
       {/* LOADING STATE */}
       {isPending && (
         <p className="mt-4 text-sm text-orange-500">
-          Filtering results...
+          Filtering results...oviiiiiiiiiiii
         </p>
       )}
     </div>
