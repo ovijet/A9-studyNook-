@@ -1,15 +1,17 @@
 import RoomDetailsPage from "@/component/RoomDetailsPage";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+
 import React from "react";
 
 const RoomPage = async ({ params }) => {
   const { id } = await params;
 
-  const {token}=await auth.api.getToken({
+  const {token} =await auth.api.getToken({
     headers:await headers()
   })
-  console.log(token);
+
+  console.log(token,'llllllllll');
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/study/${id}`, {
     
@@ -21,7 +23,7 @@ const RoomPage = async ({ params }) => {
 
   const book = await res.json();
 
-  console.log(book, "oviiiiii");
+  // console.log(book, "oviiiiiixxxxxxx");
 
   // if (!data) {
   //   return <div>No Room Found</div>;

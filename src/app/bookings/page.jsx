@@ -49,8 +49,8 @@ const BookingsPage = () => {
 
                       <div className="relative w-14 h-14 rounded-xl overflow-hidden">
                         <Image
-                          src={item.image}
-                          alt={item.roomName}
+                          src={item.image||'https://images.unsplash.com/photo-1507525428034-b723cf961d3e'}
+                          alt={item.roomName||'room'}
                           fill
                           className="object-cover"
                         />

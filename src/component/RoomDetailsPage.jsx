@@ -87,7 +87,7 @@ const RoomDetailsPage = ({ book }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
 
           {[
-            { label: 'Hourly Rate', value: `$${hourlyRate}`, icon: '💰', color: 'text-orange-500' },
+            { label: 'Hourly Rate', value: `${hourlyRate}`, icon: '💰', color: 'text-orange-500' },
             { label: 'Capacity', value: `${capacity} Seats`, icon: '🪑' },
             { label: 'Floor', value: floor, icon: '📍' },
             { label: 'Bookings', value: bookingCount || 0, icon: '📅' },
