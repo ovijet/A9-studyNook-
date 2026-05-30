@@ -44,10 +44,10 @@ const BookWorks=()=>{
               className="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
             >
               {/* Icon */}
-              <div className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-6 text-2xl">
+              <div className="w-16 h-16 rounded-2xl bg-[#FF6900] text-white flex items-center justify-center mx-auto mb-6 text-2xl">
                 {item.icon}
               </div>
-              <div className="text-center text-[#f39c12]">
+              <div className="text-center text-[#FF6900]">
                   {item.step}
               </div>
 

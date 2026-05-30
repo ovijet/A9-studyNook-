@@ -24,10 +24,6 @@ const RoomPage = async ({ params }) => {
   const book = await res.json();
 
   // console.log(book, "oviiiiiixxxxxxx");
-
-  // if (!data) {
-  //   return <div>No Room Found</div>;
-  // }
   return (
     <div>
       <RoomDetailsPage book={book} />

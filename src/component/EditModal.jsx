@@ -9,9 +9,11 @@ import {
   TextArea,
   TextField,
 } from "@heroui/react";
+import { error } from "better-auth/api";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const amenities = [
   { key: "whiteboard", label: "Whiteboard", icon: "📝" },
@@ -83,10 +85,10 @@ const EditModal = ({ book }) => {
       console.log(data);
 
       if (res.ok) {
-        alert("Room updated successfully");
+        toast.success("Room updated successfully");
         router.refresh()
       } else {
-        alert("Failed to update");
+        toast.error(error?.message|| "Failed to update");
       }
     } catch (error) {
       console.log(error);

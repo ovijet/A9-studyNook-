@@ -20,9 +20,18 @@ const BookingsPage = () => {
       </h1>
 
       {bookings.length === 0 ? (
-        <div className="text-center text-gray-500 text-xl font-medium">
-          No bookings found
-        </div>
+        <div className="flex flex-col items-center justify-center py-16 bg-white rounded-3xl border border-gray-200 shadow-sm">
+  <div className="text-6xl mb-4">📅</div>
+
+  <h2 className="text-2xl font-bold text-gray-800 mb-2">
+    No Bookings Found
+  </h2>
+
+  <p className="text-gray-500 text-center max-w-md">
+    There are currently no room bookings available.
+    Once users start reserving rooms, their bookings will appear here.
+  </p>
+</div>
       ) : (
         <div className="overflow-x-auto rounded-3xl border shadow bg-white">
           <table className="w-full text-left border-collapse">

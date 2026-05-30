@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import RoomCard from './RoomCard';
+import { FaArrowRight } from 'react-icons/fa';
 
 const FeaturedRoom = async () => {
   const res = await fetch(
@@ -36,8 +37,8 @@ const FeaturedRoom = async () => {
 
           <div>
             <Link href="/Rooms">
-              <button className="btn btn-primary rounded-full px-8">
-                View All Rooms
+              <button className="btn bg-[#FF653F] text-white hover:bg-[#EE5A24] rounded-full px-8">
+                View All Rooms   <FaArrowRight />
               </button>
             </Link>
           </div>

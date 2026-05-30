@@ -28,7 +28,7 @@ export function DeleteModal({ book }) {
       console.log(data);
 
       if (res.ok) {
-      toast
+      toast('Delete Room')
         router.push('/Rooms')
       }
 

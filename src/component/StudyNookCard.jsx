@@ -7,21 +7,21 @@ const features = [
     title: "Easy Booking",
     description:
       "Pick a date, choose an hour, and confirm instantly without any hassle.",
-    icon: <CalendarDays className="w-10 h-10 text-[#1E3029]" />,
+    icon: <CalendarDays className="w-10 h-10 text-[#FF6900]" />,
   },
   {
     id: 2,
     title: "Flexible Schedule",
     description:
       "Book study rooms based on your own routine — morning, evening, or late-night focus sessions.",
-    icon: <Clock3 className="w-10 h-10 text-[#1E3029]" />,
+    icon: <Clock3 className="w-10 h-10 text-[#FF6900]" />,
   },
   {
     id: 3,
     title: "Safe & Quiet Space",
     description:
       "Enjoy a peaceful environment designed for concentration, productivity, and comfort.",
-    icon: <ShieldCheck className="w-10 h-10 text-[#1E3029]" />,
+    icon: <ShieldCheck className="w-10 h-10 text-[#FF6900]" />,
   },
 ];
 

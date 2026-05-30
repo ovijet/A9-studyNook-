@@ -15,6 +15,8 @@ import {
 
 import { useRouter } from "next/navigation";
 import { authClient, signUp } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -30,12 +32,12 @@ const RegisterPage = () => {
     });
 
     if (error) {
-      alert("error");
+     toast.error(error?.message||"someThink is wrong");
       return;
     }
 
     if (data) {
-      alert("Signup successful");
+      toast("Signup successful");
       router.push("/");
     }
   };
@@ -46,12 +48,12 @@ const RegisterPage = () => {
     });
 
     if (data) {
-      alert("Signup successful");
+      toast("Signup successful");
       router.push("/");
     }
 
     if (error) {
-      alert(error.message);
+      toast.error(error?.message||"someThink is wrong");
     }
   };
 
@@ -151,7 +153,17 @@ const RegisterPage = () => {
             Continue with Google
           </Button>
         </div>
-      </Card>
+
+
+<p className="text-center text-sm text-gray-600 mt-6">
+  Already have an account?{' '}
+  <Link
+    href="/login"
+    className="text-orange-500 font-semibold hover:text-orange-600 transition underline underline-offset-4"
+  >
+    Login
+  </Link>
+</p>      </Card>
     </div>
   );
 };

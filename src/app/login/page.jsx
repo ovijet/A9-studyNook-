@@ -11,8 +11,10 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -28,12 +30,12 @@ export default function SignUpPage() {
     });
 
     if (error) {
-      alert("error");
+      toast.error(error?.message || 'error');
       return;
     }
 
     if (data) {
-      alert("Signup successful");
+      toast("Signup successful");
       router.push("/");
     }
   };
@@ -44,12 +46,12 @@ export default function SignUpPage() {
     });
 
     if (data) {
-      alert("Signup successful");
+      toast("Signup successful");
       router.push("/");
     }
 
     if (error) {
-      alert("error");
+      toast.error(error?.message||"someThink is wrong");
     }
   };
 
@@ -149,7 +151,7 @@ export default function SignUpPage() {
         <div className="px-6 pb-8 flex flex-col gap-3">
 
           <Button
-            onClick={() => router.push("/resister")}
+            onClick={() => router.push("/register")}
             variant="bordered"
             className="w-full rounded-lg py-3 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
@@ -164,6 +166,16 @@ export default function SignUpPage() {
             <FcGoogle size={20} />
             Continue with Google
           </Button>
+
+          <p className="text-center text-sm text-gray-600 mt-6">
+ Don't have an account?  {" "}
+  <Link
+    href="/register"
+    className="text-orange-500 font-semibold hover:text-orange-600 transition underline underline-offset-4"
+  >
+    Register
+  </Link>
+</p>
 
         </div>
       </Card>
