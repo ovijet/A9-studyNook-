@@ -12,6 +12,7 @@ const BookingsPage = () => {
       .then((res) => res.json())
       .then((data) => setBookings(data));
   }, []);
+  
 
   return (
     <div className="p-6">
