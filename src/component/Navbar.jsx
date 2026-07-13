@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 const Navbar = () => {
   const { data } = authClient.useSession();
   const user = data?.user;
+  console.log("Current user:", user);
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
