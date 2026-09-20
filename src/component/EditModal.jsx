@@ -98,9 +98,9 @@ const EditModal = ({ book }) => {
   return (
     <div>
       <Modal>
-     
-          <Button variant="outline">Edit</Button>
-        
+        <Button variant="bordered" className="rounded-2xl border-slate-300 text-slate-700 font-bold hover:bg-slate-100">
+          Edit Room Details
+        </Button>
 
         <Modal.Backdrop>
           <Modal.Container placement="auto">
@@ -108,12 +108,13 @@ const EditModal = ({ book }) => {
               <Modal.CloseTrigger />
 
               <Modal.Header>
-                <Modal.Heading>Edit Room</Modal.Heading>
+                <Modal.Heading className="text-xl font-bold text-slate-900">Edit Study Room</Modal.Heading>
 
-                <p className="mt-1 text-sm text-muted">
-                  Update your room information
+                <p className="mt-1 text-sm text-slate-500">
+                  Update your room listing details and amenities
                 </p>
               </Modal.Header>
+
 
               <Modal.Body className="p-6">
                 <Surface variant="default">

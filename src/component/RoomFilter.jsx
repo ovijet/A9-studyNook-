@@ -6,6 +6,7 @@ import {
   usePathname,
   useSearchParams,
 } from "next/navigation";
+import { Search, RotateCcw, SlidersHorizontal, Check } from "lucide-react";
 
 const RoomFilter = () => {
   const router = useRouter();
@@ -23,10 +24,12 @@ const RoomFilter = () => {
   });
 
   const amenitiesList = [
-    "WiFi",
-    "Coffee",
-    "Smart TV",
-    "Printer",
+    { label: "Wi-Fi", icon: "📶" },
+    { label: "Whiteboard", icon: "📝" },
+    { label: "Projector", icon: "📽️" },
+    { label: "Air Conditioning", icon: "❄️" },
+    { label: "Quiet Zone", icon: "🤫" },
+    { label: "Power Outlets", icon: "🔌" },
   ];
 
   const updateQueryParams = (newParams) => {
@@ -52,10 +55,10 @@ const RoomFilter = () => {
     updateQueryParams({ search: value });
   };
 
-  const handleAmenityChange = (amenity, checked) => {
+  const handleAmenityChange = (amenityLabel, checked) => {
     let updated = checked
-      ? [...selectedAmenities, amenity]
-      : selectedAmenities.filter((item) => item !== amenity);
+      ? [...selectedAmenities, amenityLabel]
+      : selectedAmenities.filter((item) => item !== amenityLabel);
 
     setSelectedAmenities(updated);
     updateQueryParams({ amenities: updated.join(",") });
@@ -68,98 +71,105 @@ const RoomFilter = () => {
   };
 
   return (
-    <div className="w-full lg:w-80 bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+    <div className="w-full lg:w-80 bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs space-y-6 sticky top-24">
 
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">
-          Filters
-        </h2>
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <SlidersHorizontal size={18} className="text-orange-500" />
+          <h2 className="text-lg font-bold text-slate-900">
+            Filter Rooms
+          </h2>
+        </div>
 
-        <button
-          onClick={handleReset}
-          className="text-sm text-orange-500 font-semibold hover:text-orange-600"
-        >
-          Reset
-        </button>
+        {(search || selectedAmenities.length > 0) && (
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1 text-xs text-orange-600 hover:text-orange-700 font-bold transition"
+          >
+            <RotateCcw size={12} />
+            <span>Reset</span>
+          </button>
+        )}
       </div>
 
-      {/* SEARCH */}
-      <div className="mb-6">
-        <p className="text-sm font-semibold text-gray-700 mb-2">
-          Search
-        </p>
+      {/* SEARCH INPUT */}
+      <div className="space-y-2">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          Search by Name
+        </label>
 
-        <input
-          type="text"
-          placeholder="Search room..."
-          value={search}
-          onChange={(e) => handleSearch(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-        />
+        <div className="relative">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="e.g. Quiet Cell 3..."
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 focus:bg-white transition"
+          />
+        </div>
       </div>
 
-      {/* AMENITIES */}
-      <div>
-        <p className="text-sm font-semibold text-gray-700 mb-3">
+      {/* AMENITIES CHECKBOX GROUP */}
+      <div className="space-y-3">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
           Amenities
-        </p>
+        </label>
 
-        <div className="space-y-3">
-
+        <div className="space-y-2">
           {amenitiesList.map((amenity) => {
-            const isChecked = selectedAmenities.includes(amenity);
+            const isChecked = selectedAmenities.includes(amenity.label);
 
             return (
               <label
-                key={amenity}
-                className="flex items-center justify-between cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition"
+                key={amenity.label}
+                className={`flex items-center justify-between cursor-pointer p-3 rounded-2xl border transition-all ${
+                  isChecked
+                    ? "bg-orange-50/80 border-orange-200 text-orange-900 shadow-2xs"
+                    : "bg-slate-50/50 border-slate-200/70 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
+                }`}
               >
+                <div className="flex items-center gap-2 text-sm font-semibold">
+                  <span className="text-base">{amenity.icon}</span>
+                  <span>{amenity.label}</span>
+                </div>
 
-                {/* LEFT */}
-                <span className="text-gray-700 text-sm">
-                  {amenity}
-                </span>
-
-                {/* CUSTOM CHECKBOX */}
                 <div className="relative">
                   <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={(e) =>
-                      handleAmenityChange(amenity, e.target.checked)
+                      handleAmenityChange(amenity.label, e.target.checked)
                     }
-                    className="peer hidden"
+                    className="sr-only"
                   />
 
                   <div
-                    className={`w-5 h-5 rounded-md border flex items-center justify-center transition ${
+                    className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all ${
                       isChecked
-                        ? "bg-orange-500 border-orange-500"
-                        : "border-gray-300"
+                        ? "bg-orange-500 border-orange-500 text-white"
+                        : "border-slate-300 bg-white"
                     }`}
                   >
-                    {isChecked && (
-                      <span className="text-white text-xs">✓</span>
-                    )}
+                    {isChecked && <Check size={12} strokeWidth={3} />}
                   </div>
                 </div>
-
               </label>
             );
           })}
-
         </div>
       </div>
 
-      {/* LOADING STATE */}
+      {/* LOADING STATE INDICATOR */}
       {isPending && (
-        <p className="mt-4 text-sm text-orange-500">
-          Filtering results...oviiiiiiiiiiii
-        </p>
+        <div className="pt-2 text-center text-xs font-medium text-orange-600 animate-pulse flex items-center justify-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+          <span>Updating filter results...</span>
+        </div>
       )}
     </div>
   );
 };
 
-export default RoomFilter;
+export default RoomFilter;

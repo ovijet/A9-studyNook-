@@ -1,73 +1,92 @@
 import React from "react";
-import { CalendarDays, Clock3, ShieldCheck } from "lucide-react";
+import { CalendarDays, Clock3, ShieldCheck, Zap } from "lucide-react";
 
 const features = [
   {
     id: 1,
-    title: "Easy Booking",
+    title: "Instant Room Reservation",
     description:
-      "Pick a date, choose an hour, and confirm instantly without any hassle.",
-    icon: <CalendarDays className="w-10 h-10 text-[#FF6900]" />,
+      "Select your date, pick your preferred hourly time slot, and confirm instantly with zero friction.",
+    icon: CalendarDays,
+    color: "from-orange-500 to-amber-500",
   },
   {
     id: 2,
-    title: "Flexible Schedule",
+    title: "Flexible Hourly Booking",
     description:
-      "Book study rooms based on your own routine — morning, evening, or late-night focus sessions.",
-    icon: <Clock3 className="w-10 h-10 text-[#FF6900]" />,
+      "Book strictly for the hours you need — morning exam review, afternoon study group, or late-night focus.",
+    icon: Clock3,
+    color: "from-amber-500 to-yellow-500",
   },
   {
     id: 3,
-    title: "Safe & Quiet Space",
+    title: "Quiet & Verified Spaces",
     description:
-      "Enjoy a peaceful environment designed for concentration, productivity, and comfort.",
-    icon: <ShieldCheck className="w-10 h-10 text-[#FF6900]" />,
+      "Enjoy noise-controlled rooms equipped with Wi-Fi, power outlets, and comfortable seating designed for productivity.",
+    icon: ShieldCheck,
+    color: "from-orange-600 to-red-500",
   },
 ];
 
 const StudyNookCard = () => {
   return (
-    <section className="px-4 sm:px-6 lg:px-10 py-16 bg-[#F7F7F5]">
-      <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#1E3029] mb-4">
-            Why StudyNook?
-          </h1>
+    <section className="py-20 bg-white border-y border-slate-200/60 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider">
+            <Zap size={14} className="text-orange-500 fill-orange-500" />
+            <span>Designed For Students</span>
+          </div>
 
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            Built around the way real students study — quiet, focused, and on
-            your schedule.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+            Why Choose StudyNook?
+          </h2>
+
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+            Everything you need for uninterrupted concentration and flawless group collaboration.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature) => (
-            <div
-              key={feature.id}
-              className="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
-            >
-              {/* Icon */}
-              <div className="w-16 h-16 rounded-2xl bg-[#EEF3F0] flex items-center justify-center mb-6">
-                {feature.icon}
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={feature.id}
+                className="group relative bg-slate-50/70 hover:bg-white p-8 rounded-3xl border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-orange-200 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+              >
+                <div>
+                  {/* Icon Badge */}
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-white mb-6 shadow-md shadow-orange-500/20 group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-7 h-7" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors">
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-4 border-t border-slate-200/60 flex items-center text-xs font-bold text-orange-600 group-hover:translate-x-1 transition-transform">
+                  <span>Learn more</span>
+                  <span className="ml-1">→</span>
+                </div>
               </div>
-
-              {/* Title */}
-              <h2 className="text-xl font-semibold text-[#1E3029] mb-3">
-                {feature.title}
-              </h2>
-
-              {/* Description */}
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
       </div>
     </section>
   );
 };
 
-export default StudyNookCard;
+export default StudyNookCard;

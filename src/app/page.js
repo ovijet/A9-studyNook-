@@ -1,21 +1,22 @@
 import Banner from "@/component/Banner";
-import RoomCard from "@/component/RoomCard";
-import Image from "next/image";
-import AllRooms from "./Rooms/page";
-import FeaturedRooms from "@/component/FeaturedRoom";
 import FeaturedRoom from "@/component/Featured";
+import RoomCategories from "@/component/RoomCategories";
 import StudyNookCard from "@/component/StudyNookCard";
 import BookWorks from "@/component/BookWorks";
+import Testimonials from "@/component/Testimonials";
+import FaqSection from "@/component/FaqSection";
 
 export default function Home() {
   return (
-    <div>
+    <div className="space-y-0 overflow-x-hidden">
       <Banner />
-      {/* <AllRooms /> */}
-      {/* <FeaturedRooms/> */}
-      <FeaturedRoom/>
-      <StudyNookCard/>
-      <BookWorks/>
+      <FeaturedRoom />
+      <RoomCategories />
+      <StudyNookCard />
+      <BookWorks />
+      <Testimonials />
+      <FaqSection />
     </div>
   );
 }
+
